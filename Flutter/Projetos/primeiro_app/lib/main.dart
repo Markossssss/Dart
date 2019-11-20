@@ -11,8 +11,27 @@ class Home extends StatefulWidget {
   _Home_State createState() => _Home_State();
 }
 class _Home_State extends State<Home> {
-
+  String _infoText = "Pode entrar!";
   int _people = 0;
+  void _changePeople(int delta){
+    setState(() {
+        _people += delta;
+
+      if (_people >= 0 && _people <= 5){
+        setState(() {
+           _infoText = "Fechado!";
+        });
+      } else if (_people > 5 && _people < 11){
+        setState(() {
+           _infoText = "Mesas disponíveis!";
+        });
+      } else {
+        setState(() {
+           _infoText = "Sem mesas!Estamos na capacidade máxima!";
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +59,11 @@ class _Home_State extends State<Home> {
                           child: Text("+1",
                               style: TextStyle(fontSize: 40.0, color: Colors.white)),
                           onPressed: () {
-                           _people++;
+                            if (_people==11){
+                              _changePeople(0);
+                            } else {
+                              _changePeople(1);
+                            }
                           },
                         ),
                       ),
@@ -50,7 +73,11 @@ class _Home_State extends State<Home> {
                           child: Text("-1",
                               style: TextStyle(fontSize: 40.0, color:Colors.white)),
                           onPressed: () {
-                            _people++;
+                            if (_people==0){
+                              _changePeople(0);
+                            } else {
+                              _changePeople(-1);
+                            }
                           },
                         ),
                       ),
@@ -58,7 +85,7 @@ class _Home_State extends State<Home> {
                   ),
 
                   Text(
-                    "Pode Entrar!",
+                    _infoText,
                     style: TextStyle(
                       color: Colors.white,
                       fontStyle: FontStyle.italic,
